@@ -1,7 +1,7 @@
 {
     "id": "discord-timestamps",
     "name": "Discord Timestamps",
-    "version": "1.0.19",
+    "version": "1.0.20",
     "minAppVersion": "1.7.7",
     "description": "Displays discord timestamps in read mode as they would appear in Discord.",
     "author": "Erika Gozar",
