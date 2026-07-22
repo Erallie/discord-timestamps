@@ -41,7 +41,18 @@ export default class DiscordTimestamps extends Plugin {
         }
 
         function processTimestamp(match: RegExpExecArray) {
-            let time = moment(match[1], 'X', true);
+            const unixSeconds = Number(match[1]);
+
+            if (!Number.isSafeInteger(unixSeconds)) {
+                return null;
+            }
+
+            const time = moment.unix(unixSeconds);
+
+            if (!time.isValid()) {
+                return null;
+            }
+
             let format;
             let timeParsed = "";
             switch (match[2]) {
@@ -92,7 +103,7 @@ export default class DiscordTimestamps extends Plugin {
                 let textSlices: string[] = [];
                 let timestampSlices: string[] = [];
                 let timestampHover: string[] = [];
-                while ((match = /<t:(\d{9,10}):([dDtTfFR])>/g.exec(text)) !== null) {
+                while ((match = /<t:(-?\d+):([dDtTfFR])>/g.exec(text)) !== null) {
                     let timestamp = processTimestamp(match);
 
                     if (timestamp === null)
@@ -158,7 +169,7 @@ export default class DiscordTimestamps extends Plugin {
                 let text = el.textContent;
                 if (!text)
                     continue;
-                const match = /^<t:(\d{9,10}):([dDtTfFR])>$/.exec(text);
+                const match = /^<t:(-?\d+):([dDtTfFR])>$/.exec(text);
                 if (!match)
                     continue;
 
